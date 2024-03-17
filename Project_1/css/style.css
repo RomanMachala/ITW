@@ -1,5 +1,5 @@
 /*
- * Login:
+ * Login: xmacha86
  *
  * Doplnte sve reseni.
  *
@@ -8,3 +8,184 @@
  *
  * Snazte se dodat aspon castecne reseni, i snaha se hodnoti.
  */
+@font-face{
+    font-family: Textile;
+    src: url('../fonts/textile.ttf');
+}
+
+body {
+    background-image: url('../img/bg/bg-body.svg');
+    width: 100%;
+    margin: 0;
+}
+header {   
+    position: relative;
+    margin-right: 0;
+}
+#header-title{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    color: white;
+    text-shadow: lightgreen 1px 0 10px;
+    width: auto;
+    background-image: url('../img/bg/bg-header.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: visible;
+}
+#header-title::after{
+    content: '';
+    display: block;
+    height: 350px; /* Pevná výška 'okraje' */
+    width: 100%; /* Šířka se přizpůsobí šířce #header-title */
+    background-image: url('../img/custom/beers.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    bottom: -120px;
+    z-index: 100;
+}
+#header-title span{
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    border-image: url('../img/custom/beers.png');
+}
+.scrolled #header-title span{
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+#header-title span:nth-child(1){
+    margin-bottom: -20px;
+    margin-top: auto;
+    font-size: 140px;
+    text-transform: uppercase;
+    font-family: Spectral;
+    
+}
+#header-title span:nth-child(2){
+    font-size: 80px;
+    text-transform: uppercase;
+    font-family: Spectral;
+    margin-top: -10px;
+}
+#header-title span:nth-child(3){
+    margin: 0;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-family: Spectral;
+    font-weight: 700;
+}
+#header-title span:nth-child(4){
+    margin-top: 0px;
+    margin-bottom: auto;
+    font-family: Textile;
+    font-size: 50px;
+}
+#header-title span:nth-child(2)::before{
+    content: '';
+    display: inline-block; 
+    height: 90px; 
+    width: 90px; 
+    background-image: url('../img/custom/flag.svg'); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
+}
+#header-title span:nth-child(2)::after{
+    content: '';
+    display: inline-block; 
+    height: 90px; 
+    width: 90px; 
+    background-image: url('../img/custom/flag.svg'); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
+}
+#header-title span:nth-child(4)::before{
+    content: '"';
+}
+#header-title span:nth-child(4)::after{
+    content: '"';
+}
+#header-menu{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    border-top-style: dotted;
+    border-bottom-style: dotted;
+    border-color: lightgreen;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 165px;
+    min-width: 768px;
+    max-width: 1200px;
+}
+#header-menu nav ul {
+    display: flex;
+    justify-content: center; 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+    width: 100%; 
+}
+
+#header-menu nav ul li{
+    display: inline;
+    margin-right: 30px;
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#header-menu nav li:nth-child(3){
+    margin-right: 50px;
+}
+#header-menu nav li:nth-child(4){
+    margin-left: 50px;
+}
+#header-menu nav li a{
+    text-decoration: none;
+    color: black;
+    font-size: 24px;
+    font-family: url('../fonts/textile.ttf');
+    text-transform: uppercase;
+    font-weight: 700;
+}
+#heyoooo {
+    position: absolute;
+    top: 100%;
+    margin-top: 170px;
+    left: 50%;
+    transform: translate(-30%, 0);
+}
+#heyoooo a img{
+    width: 60px;
+    height: 60px;
+    transform: rotateZ(90deg)
+}
+#heyoooo div span{
+    visibility: hidden;
+}
+main {
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    background-position: center;
+    background-color: white;
+    background-image: url('../img/custom/sprites.svg');
+    background-repeat: space 100px;
+    min-width: 768px;
+    max-width: 1400px;
+    border-left: dotted lightgreen;
+    border-right: dotted lightgreen;
+}
+#about{
+    height: 100%;
+}
+#about .heading{
+    padding-top: 200px;
+}
