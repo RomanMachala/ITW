@@ -8,20 +8,83 @@
  *
  * Snazte se dodat aspon castecne reseni, i snaha se hodnoti.
  */
+
+
+/* Obecne na zacatek bych chtel popsat reseni prvku typu tlacitka u videa a hlavne hvezdicky/reference/odkazy.... 
+ * je toho pomerne hodne v dokumentu, tak at to nemusim nekolikrat vypisovat 
+ * nasatvim textu display na blok, pevnou sirku a vysku, barvu textu na transparent, aby nesel videt,a le stale byl klikatelny
+ * pomoci pseudoelementu ::after nebo ::before pridam pozadovanou ikonu, display nastavim na block a pak samozrejme font size, family atd..
+ * tato ikonka pak prekryva neviditelny text, ktery je velikosti +- samotne ikonky, da se na nej kliknout a dale s nim pracovat
+ */
+
+
+/*  
+ * Sekce video. Asi nejtezsi cast. Video je vlozeni do gridu, spolecne s jeho ovladacimi prvky. Ma pevne nastavenou sirku (mel jsem problemy
+ * se zmenou velikosti videa po jeho spusteni). Video ma position relative a prvky absolute. Je tam pomerne hodne definici pozic a stylu kvuli
+ * ruznym stavum vide, moznosti fullscreen, ... Fullscreen jsem resil zpusobem, ze video ma position: fixed. vyska sirka je dana vyskou a sirkou viewportu.
+ * Ovladaci prvky ve fulscreenu maji taky position fixed
+ */
+
+
+/*  
+ * Sekce tym. Pomerne jednoducha cast. je vytvoren grid se 4 sloupci. Kazdy sloupec obsahuje jednoho team membera. Efekt zvetseni
+ * obrazku pri jeho najeti jsem resil pomoci paddingu, ktery kazda polozka ma implicitne, pri najeti se padding snizi na 0.
+ * "Zvetsi" se tak cely objekt. 
+ */
+
+
+/*
+ * Sekce events. Zde jsem stravil nejvice casu po videu, nez mi doslo, ze misto display: flex. mam pouzit float na samotne obrazky :).
+ * Jednotlive eventy maji pevnou sirku, protoze jinak zasahovaly samy do sebe. Vyuzil jsem tedy plovouci objekty, taky display flex
+ * na reference a hodnoceni, pro jejich zarovnani do row.
+ */
+
+/*  
+ * Sekce menu. Jednotlive polozky jsou ulozeny do gridu. Popisek k nim je zarovnan vzdy pomoci procentualni sirky/vysky.
+ * Vystupky (trojuhelnikove) z popisku smerem do obrazku jsem resil kreslenim trojuhelniku. Pro kazdy pokrm je tedy nakreslen vlastni trojuhelnik.
+ * Roziseni o jaky pokrm se jedna jsem pak resil pomoci :nth-child()
+ */
+
+/*  
+ * Sekce services. Tabulka ma nastavenou background color na cernou. Ma danou opacoity a pomoci pseudotridy ::after je vlozen obrazek heisenberga, ktery
+ * ma absolutni pozicovani vuci tabulce. Tecky mezi nazvem a cenou jsem resil pomoci pseudotridy ::after pro nazvy v prvnim sloupci. Delka tecek je dana
+ * sirkou samotneho sloupce. Pri prejeti pres danou polozku se vynuluje opacity na tabulce, dojde k zvyrazneni vsech polozek v prejetem radku (tedy nazev
+ * cena, tecky, ...). Zaroven dojde k mensimu zvetseni daneho nazvu.
+ */
+
+/* 
+ * Sekce contact. Je vytvoren grid o dvou sloupcich, do ktereho je vlozena fotka a nasledne do druheho zbytek. Pomoci padding a margins jsou nastaveny 
+ * rozestupy. Stylovani jednotlivych policek potom nasledne porbiha podle pseudotridy :valid. Jinak jsou implicitne nastaveny na nejakou barvu. 
+ * jejich implicitni rozestaveni jsem resil pomoci display:flex a flex-dorection: column. 
+ */
+
+
+/*  
+ * Hodne veci se moc opakovalo, proto jsem se to snazil ve vysledku takhle shrnout, nektere popisy jsou i primo mezi kodem, ale jedna se spise 
+ * o neco malo navic. Havni popisek se nachazi zde. Doufam ze se reseni bude libit a doufam v co nejvetsi pocet bodu!!
+ * Machala Roman.
+ */
+
+
+/* import textoveho stylu */
 @font-face{
     font-family: Textile;
     src: url('../fonts/textile.ttf');
 }
 
+/* Hlavni nastaveni celeho tela */
 body {
     background-image: url('../img/bg/bg-body.svg');
     width: 100%;
     margin: 0;
 }
+/* Margin right na 0 jsem daval, protoze mi nedosahovala stranka pres celou sirku, i kdyz byla nastavena width na 100% */
 header {   
     position: relative;
     margin-right: 0;
+    overflow: visible;
 }
+/*  samotny hlavni nadpis stranky, zvolena metoda display flex pro zarovnani nadpisu pod sebe*/
 #header-title{
     position: relative;
     display: flex;
@@ -35,34 +98,35 @@ header {
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
-    overflow: visible;
+    background-size: cover; 
 }
+/* Vlozeni piv na konec/za hlavni header stranky */
 #header-title::after{
     content: '';
     display: block;
-    height: 350px; /* Pevná výška 'okraje' */
-    width: 100%; /* Šířka se přizpůsobí šířce #header-title */
+    height: 430px;
+    width: 100%;
     background-image: url('../img/custom/beers.png');
     background-repeat: no-repeat;
     background-size: cover;
     position: absolute;
     left: 0;
-    bottom: -120px;
+    bottom: -125px;
     z-index: 100;
 }
 #header-title span{
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
-    border-image: url('../img/custom/beers.png');
 }
 .scrolled #header-title span{
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
+
+/* Definice pro jednotlive radky nadpisu, tady si myslim, ze to je pomerne straight-forward */
 #header-title span:nth-child(1){
     margin-bottom: -20px;
-    margin-top: auto;
+    margin-top: 70px;
     font-size: 140px;
     text-transform: uppercase;
     font-family: Spectral;
@@ -87,6 +151,7 @@ header {
     font-family: Textile;
     font-size: 50px;
 }
+/* Vlozeni vlajek pred a za 2 dite v nadpisu  */
 #header-title span:nth-child(2)::before{
     content: '';
     display: inline-block; 
@@ -105,12 +170,16 @@ header {
     background-size: contain; 
     background-repeat: no-repeat; 
 }
+/* Vlozeni uvozovek pred a za 4 dite v nadpisu */
 #header-title span:nth-child(4)::before{
     content: '"';
 }
 #header-title span:nth-child(4)::after{
     content: '"';
 }
+/* Menu , pozice delana jako absolute, nemusela by byt, puvodne jsem mel problemy s vlozenim piv, hodne mi to delalo problemy, pomohlo mi to
+ * jednoduse tento problem vyresit
+ */
 #header-menu{
     position: absolute;
     left: 0;
@@ -121,10 +190,11 @@ header {
     border-color: lightgreen;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 165px;
+    margin-top: 200px;
     min-width: 768px;
-    max-width: 1200px;
+    max-width: 1100px;
 }
+/* Samotna navigace */
 #header-menu nav ul {
     display: flex;
     justify-content: center; 
@@ -133,7 +203,7 @@ header {
     margin: 0; 
     width: 100%; 
 }
-
+/* Jendotlive prvky navigace, inline nastavi do radku */
 #header-menu nav ul li{
     display: inline;
     margin-right: 30px;
@@ -141,12 +211,32 @@ header {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+/* Pri najeti na jednotlive prvky se zvyrazni zelenou barvou */
+#header-menu nav ul li a:hover{
+    color: green;
+}
+/* Specialni nastaveni pro 3 a 4 dite menu, kvuli vlozeni listu */
 #header-menu nav li:nth-child(3){
-    margin-right: 50px;
+    margin-right: 70px;
 }
 #header-menu nav li:nth-child(4){
-    margin-left: 50px;
+    margin-left: 60px;
+    position: relative;
 }
+/* Vlozeni samotneho listu mezi 3 a 4 dite */
+#header-menu nav li:nth-child(4)::before{
+    content: '';
+    background-image: url('../img/custom/leaf.svg');
+    width: 100px;
+    height: 100px;
+    display: block;
+    position: absolute;
+    left: -110px;
+    background-repeat: no-repeat;
+    transform: rotate(90deg) scale(0.5);
+    bottom: -40px;
+}
+/* Definice stylu samotneho pisma */
 #header-menu nav li a{
     text-decoration: none;
     color: black;
@@ -155,37 +245,1270 @@ header {
     text-transform: uppercase;
     font-weight: 700;
 }
-#heyoooo {
-    position: absolute;
-    top: 100%;
-    margin-top: 170px;
-    left: 50%;
-    transform: translate(-30%, 0);
-}
-#heyoooo a img{
-    width: 60px;
-    height: 60px;
-    transform: rotateZ(90deg)
-}
-#heyoooo div span{
-    visibility: hidden;
-}
+/* Definice hlavniho tela */
 main {
     margin-left: auto;
     margin-right: auto;
     height: 100%;
     background-position: center;
     background-color: white;
-    background-image: url('../img/custom/sprites.svg');
+    background-image: url('../img/bg/bg-body.svg');
     background-repeat: space 100px;
+}
+/* Sekce about, asi nejsoliztejsi cast pro me */
+#about {
+    padding-top: 100px;
+    min-width: 768px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    border-left: 5px dotted lightgreen;
+    border-right: 5px dotted lightgreen;
+    padding-bottom: 100px;
+}
+/* Nadpisy */
+#about .heading{
+    padding-top: 250px;
+    text-align: center;
+}
+#about .heading h2{
+    font-family: Calistoga;
+    text-transform: uppercase;
+    color: green;
+    letter-spacing: 0.2em;
+    font-size: 16px;
+}
+#about .heading span{
+    font-family: Textile;
+    font-size: 25px;
+}
+/* Video-player div je vlozen do gridu a nastaveno position relative pro usporadani prvku, do stejne area jsou vlozeny i prvky pro ovladani*/
+#about .video-player{
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: 450px;
+    grid-template-rows: 350px;
+    grid-template-areas: 
+    'video';
+    position: relative;
+    width: 400px;   /* Sirka nastavena z duvodu, ze pokud jsem spustil video, doslo k jeho zmenseni a vzdy mi to pomerne hodne rozbilo layout */
+    /* Pokud by sirka byla vetsi, opet by dochazelo ke zmenseni, nic moc mi na to nepomahalo, proto jsem se uchylil k tomuto reseni */
+    margin-left: auto;
+    margin-right: auto;
+}
+/**
+ * Nejtezsi cast byla pravdepodobne samotne video, ma pozici relative pro ostatni prvky (tlacitka, ..) jednotlive prvky maji pozici absolute a 
+ * podle toho v jakem stavu je aktualne video (played, paused, muted , ...) se jednotlive ikony meni. Jejich pozicovani je tedy absolute vuci videu. 
+ * Jsou dva styly pozicovani, pro fullscreen a pro male video.
+ * Fullscreen jsem resil pomoci position:fixed atributu. vyska a sirka je nastavena na vysku a sirku viewportu a z index je nastaven na 100, pro zobrazeni
+ * samotneho videa pred vsemi ostatnimi prvky.
+ */
+/* Samotne video */
+#about .video-player .video-content{
+    grid-area: video;
+    overflow: hidden;
+    object-fit: cover;
+}
+#about .video-player .video-controls{
+    grid-area: video;
+    position: absolute;
+    bottom: 0;
+}
+/* Definice stylu pro playpuase video */
+#about .video-player .video-controls .playpause{
+    position: absolute;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: transparent;
+    bottom: 30px;
+    left: 10px
+}
+/* Viz uvod  */
+#about .video-player .video-controls .playpause::before{
+    content: '\f04c';
+    display: inline-block;
+    font-weight: 900;
+    color: green;
+    font-family: "Font Awesome 5 Free";
+    font-size: 24px;
+}
+/* Jen zmena ikony pro jiny stav videa */
+#about .video-player[data-state="paused"] .video-controls .playpause::before{
+    content: '\f04b';
+    display: inline-block;
+    font-weight: 900;
+    color: green;
+    font-family: "Font Awesome 5 Free";
+    font-size: 24px;
+}
+/* neviditelny ukazatel progressu videa, ukaze se az kdyz najedu na progress bar */
+#about .video-popup {
+    display: none; 
+    position: absolute;
+    padding: 5px;
+    background-color: whitesmoke; 
+    border-radius: 5px; 
+    font-size: 12px; 
+    color: green;
+    transform: translate(-50%, -100%);
+    border: 2px solid green;
+}
+/* zobrazeni pop-upu pri najeti na prgoress bar */
+#about .progress:hover + .video-popup{
+    display: block;
+    background-color: white;
+}
+/* viz uvod */
+#about .video-player .video-controls .mute{
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background: none;
+    border: none;
+    color: transparent;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    bottom: 30px;
+    left: 35px;
+}
+/* Zmena ikony pri jinem stavu videa */
+#about .video-player[data-mute="unmuted"] .video-controls .mute::before{
+    content: '\f028';
+    font-family: "Font Awesome 5 Free";
+    color: green;
+    font-weight: 900;
+    font-size: 24px;
+    display: inline-block;
+}
+#about .video-player[data-mute="muted"] .video-controls .mute::before{
+    content: '\f6a9';
+    font-family: "Font Awesome 5 Free";
+    color: green;
+    font-weight: 900;
+    font-size: 24px;
+    display: inline-block;
+}
+/* viz uvod */
+#about .video-player .video-controls .fullscreen{
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    position: absolute;
+    bottom: 30px;
+    background: none;
+    border: none;
+    color: transparent;
+    right: -425px;
+    cursor: pointer;
+}
+#about .video-player .video-controls .fullscreen::before{
+    content: '\f065';
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 24px;
+    color: green;
+    display: inline-block;
+
+}
+#about .video-player .video-controls .progress{
+    background-color: green;
+    opacity: 0.8;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 450px;
+}
+#about .video-player .video-controls .time{
+    color: green;
+    position: absolute;
+    bottom: 22px;
+    right: -415px;
+}
+#about .video-player .video-controls .time::before{
+    color: green;
+    position: absolute;
+    bottom: 22px;
+    right: -415px;
+}
+#about .video-player.fullscreen .video-content video{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    z-index: 100;
+    left: 0;
+    overflow: visible;
+    background-color: black;
+}
+#about .video-player.fullscreen .video-controls .fullscreen{
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    position: fixed;
+    background: none;
+    border: none;
+    color: transparent;
+    bottom: 5%;
+    left: 97.5%;
+    cursor: pointer;
+    z-index: 101;
+}
+#about .video-player.fullscreen .video-controls .fullscreen::before{
+    content: '\f065';
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 30px;
+    color: green;
+    display: inline-block;
+    
+}
+#about .video-player.fullscreen .video-controls .mute{
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background: none;
+    border: none;
+    color: transparent;
+    cursor: pointer;
+    padding: 0;
+    position: fixed;
+    bottom: 5%;
+    left: 60px;
+    z-index: 101;
+}
+#about .video-player.fullscreen .video-controls .mute::before{
+    content: '\f028';
+    font-family: "Font Awesome 5 Free";
+    color: green;
+    font-weight: 900;
+    font-size: 30px;
+    display: inline-block;
+}
+#about .video-player.fullscreen[data-mute="muted"] .video-controls .mute::before{
+    content: '\f6a9';
+    font-family: "Font Awesome 5 Free";
+    color: green;
+    font-weight: 900;
+    font-size: 30px;
+    display: inline-block;
+}
+#about .video-player.fullscreen .video-controls .playpause{
+    position: fixed;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: transparent;
+    bottom: 5%;
+    left: 20px;
+    z-index: 101;
+}
+#about .video-player.fullscreen .video-controls .playpause::before{
+    content: '\f04c';
+    display: inline-block;
+    font-weight: 900;
+    color: green;
+    font-family: "Font Awesome 5 Free";
+    font-size: 30px;
+}
+#about .video-player.fullscreen[data-state="paused"] .video-controls .playpause::before{
+    content: '\f04b';
+    display: inline-block;
+    font-weight: 900;
+    color: green;
+    font-family: "Font Awesome 5 Free";
+    font-size: 30px;
+}
+#about .video-player.fullscreen .video-controls .progress{
+    background-color: green;
+    opacity: 0.8;
+    position: fixed;
+    left: 0px;
+    bottom: 1%;
+    width: 100vw;
+    z-index: 101;
+}
+#about .video-player.fullscreen .video-controls .time{
+    color: green;
+    position: fixed;
+    bottom: 3%;
+    right: 3%;
+    z-index: 101;
+}
+#about .name{
+    margin-left: 45%;
+    font-family: Spectral;
+    font-size: 17px;
+}
+#about .references{
+    margin-left: 37%;
+}
+#about .references ul li{
+    display: inline;
+    list-style: none;
+}
+/* Styl pro list, zobrazeni do radku */
+#about .references ul li a{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    color: transparent;
+    position: relative;
+}
+/* vlozeni hcezdicek */
+#about .references ul li a::before{
+    display: block;
+    content: '\f005';
+    font-weight: 900;
+    font-size: 20px;
+    font-family: "Font Awesome 5 Free";
+    color: green;
+}
+/* pri hover zvetseni o 20 procent */
+#about .references ul li a:hover::before{
+    transform: scale(1.2);
+}
+/* Sekce pro tym, hodne me tato cast bavila, casove uz byla mene narocnejsi */
+#team{
+    padding-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url('../img/bg/bg-team.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: visible;
+    position: relative;
+    padding-bottom: 100px;
+}
+/* Vlozeni listecku na pomezi sekci */
+#team::before{
+    content: '';
+    display: block;
+    background-image: url('../img/custom/hr.svg');
+    width: 100%;
+    height: 100px;
+    background-repeat: no-repeat;
+    margin-top: -100px;
+}
+#team .heading{
+    text-align: center;
+}
+#team .heading h2{
+    margin-top: 100px;
+    font-family: Calistoga;
+    text-transform: uppercase;
+    color: lightgreen;
+    letter-spacing: 0.2em;
+    font-size: 24px;
+}
+#team .heading span{
+    font-family: Textile;
+    font-size: 30px;    
+    color: white;
+}
+/* Vlozeni gridu o 4 sloupcich */
+#team .section-content{
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(250px, 300px));
+    grid-template-rows: 600px;
+    justify-content: center;
+    column-gap: 10px;
+}
+/* Styl pro jednotlivou polozku */
+#team .section-content .section-item{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    opacity: 0.8;
+}
+/* Pokud najedeme na danou polozku padding se nastavi na 0, prokaze se efekt "zvetseni" celeho elementu */
+#team .section-content .section-item:hover{
+    padding: 0;
+    transition-duration: 500ms;
+    opacity: 1;
+}
+#team .section-content .section-item h3{
+    font-family: Spectral;
+    color: black;
+    text-align: center;
+    opacity: 0.8;
+}
+#team .section-content .section-item img{
+    object-fit: cover;
+    height: 300px;
+    order: -1;
+}
+#team .section-content .section-item p{
+    text-align: center;
+    font-family: Spectral;
+    order: 1;
+}
+/* Opet viz uvod, reseni referenci */
+#team .section-content .section-item .references{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#team .section-content .section-item .references ul{
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+#team .section-content .section-item .references ul li{
+    display: inline;
+    position: relative;
+    text-indent: -100px;
+}
+#team .section-content .section-item .references a{
+    width: 1em;
+    height: 1em;
+    text-align: left;
+    display: inline-block;
+    overflow: hidden;
+    color: transparent;
+    margin-right: 5px;
+}
+#team .section-content .section-item .references a::after{
+    content: '\f005';
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: green;
+    opacity: 0.9;
+    display: inline;
+    position: absolute;
+    overflow: visible;
+    position: absolute;
+    left: 100px;
+    bottom: 10px
+}
+/* Pri prejeti nad referencemi se zvetsi o 20 procent */
+#team .section-content .section-item .references a:hover::after{
+    transform: scale(1.2);
+    margin-left: 18px;
+    transition-duration: 300ms;
+}
+/* Vlozeni listecku na pomezi sekci */
+#team::after{
+    content: '';
+    display: block;
+    background-image: url('../img/custom/hr.svg');
+    height: 100px;
+    width: 100%;
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    z-index: 10;
+}
+/* Eventy */
+#events{
+    position: relative;
+    padding-top: 100px;
+    background-color: white;
+    height: 100%;
     min-width: 768px;
     max-width: 1400px;
-    border-left: dotted lightgreen;
-    border-right: dotted lightgreen;
+    margin-left: auto;
+    margin-right: auto;
+    border-left: 5px dotted lightgreen;
+    border-right: 5px dotted lightgreen;
 }
-#about{
+#events .heading{
+    text-align: center;
+}
+#events .heading h2{
+    font-family: Calistoga;
+    text-transform: uppercase;
+    color: lightgreen;
+    letter-spacing: 0.2em;
+    font-size: 24px;
+}
+#events .heading span{
+    font-family: Textile;
+    font-size: 30px;    
+    color: black;
+}
+/* hlavni nastaveni sekce pro eventy */
+#events .section-content{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 70px;
+    min-width: 768px;
+    max-width: 1400px;
+}
+/* nastaveni pro jednotlive polozky v sekci
+ * pevna sirka z duvodu, protoze pokud je vice objektu, zo mohou byt obtekany, dochazelo k tomu ze obrazek ze spodni sekce zasahoval do horni sekce 
+ */
+#events .section-content .section-item{
+    min-height: 350px;
+    border-bottom: 2px dotted grey;
+    opacity: 0.8;
+}
+/* Pokud na polozku najedu, zmizi jeji opacity */
+#events .section-content .section-item:hover{
+    opacity: 1;
+    transition-duration: 300ms;
+}
+#events .section-content .section-item h3{
+    font-family: Calistoga;
+}
+/* nastaveni obrazku pro spravne obtekani */
+#events .section-content .section-item img{
+    float: left;
+    width: 40%;
+    margin-right: 40px;
+    margin-left: 40px;
+}
+/* Specificky jine obtekani pro 2 obrazek */
+#events .section-content .section-item:nth-child(2){
+    padding-bottom: 50px;
+    text-align: right;
+}
+#events .section-content .section-item:nth-child(2) p{
+    text-align: left;
+}
+#events .section-content .section-item:nth-child(2) img{
+    float: right;
+}
+#events .section-content .section-item .events-props .rating{
+    margin-right: 10px;
+}
+/* pro hodnoceni jsem zvolil dislay flex a usporadani do radku */
+#events .section-content .section-item .events-props{
+    display: flex;
+    flex-direction: row;
+}
+#events .section-content .section-item:nth-child(2) .events-props{
+    justify-content: flex-end;
+    background-color: transparent;
+}
+#events .section-content .section-item .events-props ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#events .section-content .section-item .events-props ul li{
+    display: inline-block;
+    background-color: transparent;
+}
+#events .section-content .section-item .events-props ul li a{
+    display: block;
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    color: transparent;
+    background-color: transparent;
+}
+#events .section-content .section-item .events-props ul li a::before{
+    content: '\f005';
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: green;
+    opacity: 0.9;
+    display: inline;
+    position: absolute;
+    overflow: visible;
+    position: absolute;
+}
+#events .section-content .section-item .events-props ul li a:hover::before{
+    transform: scale(1.2);
+    transition-duration: 300ms;
+}
+/* Vlozeni listecku na pomezi sekci */
+#menu::before{
+    content: '';
+    background-image: url('../img/custom/hr.svg');
+    height: 150px;
+    width: 100%;
+    display: block;
+    position: absolute;
+    background-size: cover;
+    top: -50px
+}
+/* Sekce pro menu */
+#menu{
+    padding-top: 100px;
+    background-image: url('../img/bg/bg-menu.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    padding-bottom: 80px;
+}
+#menu .heading{
+    text-align: center;
+}
+#menu .heading h2{
+    font-family: Calistoga;
+    text-transform: uppercase;
+    color: lightgreen;
+    letter-spacing: 0.2em;
+    font-size: 24px;
+}
+#menu .heading span{
+    font-family: Textile;
+    font-size: 30px;    
+    color: white;
+}
+/* Definice hlavni casti, vytvoreni gridu pro samotne menu (4 sloupce, 4 radky) */
+#menu .section-content{
+    display: grid;
+    grid-template-rows: repeat(4, minmax(150px, 250px));
+    grid-template-columns: repeat(4, minmax(150px, 250px));
+    grid-template-areas: 
+        'cat cat chimi rum'
+        'cake cha chimi rum'
+        'cake cha fra fra'
+        'chee chee fra fra';
+    overflow: hidden;
+    object-fit: contain;
+    border: 10px solid white;
+    min-width: 600px;
+    max-width: 1000px;
+    /* min max nastaveno z duvodu, ze bez pevne sirky sice grid byl spravne rozsmisten, ale neslo jej zarovnat a "zabiral" jakoby celou sirku */
+    /* problem nastal v pripade vlozeni borderu, kdy border ohranicoval i cast, kde border jiz nemel byt, pevna sirka toto vyresila */
+    margin-left: auto;
+    margin-right: auto;
+}#menu .section-content .section-item .figures{
+    width: 100%;
     height: 100%;
 }
-#about .heading{
-    padding-top: 200px;
+/* Pokud se najede na prislusnou sekci, udela se kolem teto sekce border, tvori efekt zmenseni obrazku pri najeti */
+/* background color se nastavuje z duvodu, ze vznikaly mezi objekty transparentni pruhy */
+#menu .section-content .section-item:nth-of-type(1):hover,
+#menu .section-content .section-item:nth-of-type(3):hover,
+#menu .section-content .section-item:nth-of-type(6):hover{
+    border: 5px solid lightgreen;
+    background-color: lightgreen;
+    opacity: 0.9;
+}
+#menu .section-content .section-item:nth-of-type(2):hover,
+#menu .section-content .section-item:nth-of-type(5):hover{
+    border: 5px solid white;
+    background-color: white;
+    opacity: 0.9;
+}
+#menu .section-content .section-item:nth-of-type(4):hover,
+#menu .section-content .section-item:nth-of-type(7):hover{
+    border: 5px solid lightpink;
+    background-color: lightpink;
+    opacity: 0.9;
+}
+#menu .section-content .section-item .description{
+    text-align: center;
+    position: relative;
+}
+#menu .section-content .section-item .description h3{
+    font-family: Calistoga;
+    text-align: center;
+    font-weight: 300;
+    margin-top: 35%;
+}
+#menu .section-content .section-item .description h3 a:hover{
+    color: green;
+}
+#menu .section-content .section-item:nth-child(3) .description h3{
+    margin-top: 75%;
+}
+#menu .section-content .section-item .description h3 a{
+    text-decoration: none;
+    color: black;
+}
+#menu .section-content .section-item .description span{
+    font-size: 35px;
+    
+}
+#menu .section-content .section-item .description span::before{
+    content: '$';
+}
+#menu .section-content .section-item .figures img{
+    object-fit: cover;
+    margin: 0;
+    padding: 0;
+}
+/* Vlozeni samotnych pokrmu do jejich prislusne sekce */
+#menu .section-content .section-item:nth-of-type(1){
+    grid-area: cat;
+    display: flex;
+    flex-direction: row;
+}
+#menu .section-content .section-item:nth-of-type(2){
+    grid-area: cake;
+    display: flex;
+    flex-direction: column-reverse;
+}
+#menu .section-content .section-item:nth-of-type(3){
+    grid-area: fra;
+    display: flex;
+    flex-direction: row;
+}
+#menu .section-content .section-item:nth-of-type(4){
+    grid-area: cha;
+    display: flex;
+    flex-direction: column;
+}
+#menu .section-content .section-item:nth-of-type(5){
+    grid-area: chimi;
+    display: flex;
+    flex-direction: column;
+}  
+#menu .section-content .section-item:nth-of-type(6){
+    grid-area: chee;
+    display: flex;
+    flex-direction: row-reverse;
+}
+#menu .section-content .section-item:nth-of-type(7){
+    grid-area: rum;
+    display: flex;
+    flex-direction: column-reverse;
+}
+#menu .section-content .section-item:nth-of-type(1) .figures img{
+    min-width: 50%;
+    height: 100%;
+    background-color: lightgreen;
+}
+#menu .section-content .section-item:nth-of-type(1) .description{
+    background-color: lightgreen;
+    opacity: 0.9;
+    width: 100%;
+}
+/* Zacatek kresleni trojuhelniku pro jednotlive pokrmy */
+#menu .section-content .section-item:nth-of-type(1) .description::before{
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -60px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 30px;
+    border-color: transparent;
+    border-right-color: lightgreen;
+}
+#menu .section-content .section-item:nth-of-type(2) .figures img{
+    width: 100%;
+    min-height: 100%;
+}
+#menu .section-content .section-item:nth-of-type(2) .description{
+    background-color: white;    
+    width: 100%;
+    min-height: 50%;
+    opacity: 0.9;
+}
+#menu .section-content .section-item:nth-of-type(2) .description::before{
+    content: '';
+    position: absolute;
+    top: 100%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 30px;
+    border-color: transparent;
+    border-top-color: white;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#menu .section-content .section-item:nth-of-type(3) .figures img:nth-child(1){
+    width: 100%;
+    height: 50%;
+}
+#menu .section-content .section-item:nth-of-type(3) .figures img:nth-child(2){
+    width: 100%;
+    height: 50%;
+}
+#menu .section-content .section-item:nth-of-type(3) .description{
+    background-color: lightgreen;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+}
+#menu .section-content .section-item:nth-of-type(3) .description::before{
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-right-color: lightgreen;
+    top: 45%;
+    border-width: 30px;
+    left: -24%;
+}
+#menu .section-content .section-item:nth-of-type(4) .figures img{
+    width: 100%;
+    min-height: 100%;
+}
+#menu .section-content .section-item:nth-of-type(4) .description{
+    background-color: lightpink;
+    width: 100%;
+    min-height: 50%;
+    opacity: 0.9;
+}
+#menu .section-content .section-item:nth-of-type(4) .description::before{
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: -24%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-style: solid;
+    border-width: 30px;
+    border-color: transparent;
+    border-bottom-color: lightpink;
+}
+#menu .section-content .section-item:nth-of-type(5) .figures img{
+    height: 100%;
+    width: 100%;
+}
+#menu .section-content .section-item:nth-of-type(5) .description{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+}
+#menu .section-content .section-item:nth-of-type(5) .description::before{
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-width: 30px;
+    border-color: transparent;
+    border-bottom-color: white;
+    border-style: solid;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -24%;
+}
+#menu .section-content .section-item:nth-of-type(6) .figures img{
+    width: 100%;
+    height: 100%;
+}
+#menu .section-content .section-item:nth-of-type(6) .description{
+    background-color: lightgreen;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+}
+#menu .section-content .section-item:nth-of-type(6) .description::before{
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 30px;
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: lightgreen;
+}
+#menu .section-content .section-item:nth-of-type(7) .figures img{
+    height: 100%;
+    width: 100%;
+}
+#menu .section-content .section-item:nth-of-type(7) .description{
+    background-color: lightpink;
+    height: 100%;
+    opacity: 0.9;
+}
+#menu .section-content .section-item:nth-of-type(7) .description::before{
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 30px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: lightpink;
+}
+/* Vlozeni opet listecku na pomezi sekci */
+#menu::after{
+    content: '';
+    background-image: url('../img/custom/hr.svg');
+    background-size: cover;
+    width: 100%;
+    height: 150px;
+    position: absolute;
+    display: block;
+    bottom: -50px;
+}
+/* Services sekce */
+#services{
+    padding-top: 100px;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 768px;
+    max-width: 1400px;
+    padding-bottom: 130px;
+    border-left: 5px dotted lightgreen;
+    border-right: 5px dotted lightgreen;
+}
+#services .heading{
+    text-align: center;
+
+}
+#services .heading h2{
+    font-family: Calistoga;
+    text-transform: uppercase;
+    color: green;
+    letter-spacing: 0.2em;
+    font-size: 16px;
+}
+#services .heading span{
+    font-size: 25px;
+    font-family: Textile;
+}
+#services .section-content{
+    padding: 0 100px 0;
+}
+/* Definice pro samotnou tabulku */
+#services .section-content table {
+    margin-top: 50px;
+    opacity: 0.7;
+    width: 100%;
+    border-collapse: collapse;
+    position: relative;
+    background-color: black;
+    opacity: 0.8;
+    overflow: hidden;
+    box-shadow: 5px 5px 15px 15px black;
+    height: 500px;
+}
+/* pri prejeti tabulky se zmeni opacity */
+#services .section-content table:hover{
+    opacity: 1;
+    transition-duration: 500ms;
+}
+/* Zloveni obravku heisenberga pomoci pseudotridy after a absolutniho pozicovani */
+#services .section-content table::after{
+    content: '';
+    position: absolute;
+    background-image: url('../img/gang/heisenberg.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 2;
+    height: 70%;
+    width: 70%;
+    right: -25%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* Definice pro tabke tada */
+#services .section-content table td{
+    position: relative;
+    width: 200px;
+    color: black;
+    vertical-align: middle;
+    z-index: 100;
+    z-index: 1;
+    overflow: hidden;
+    padding: 20px;
+    font-family: Calistoga;
+}
+/* Vlozeni teckovane cary pomoci pseudotridy after */
+#services .section-content table td:nth-child(1)::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    border-bottom: 2px dotted white;
+    transform: translateY(-50%);
+    bottom: 20px;
+    margin-left: 10px;
+}
+#services .section-content table td:nth-child(2){
+    color: white;
+    padding-left: 20px;
+    margin-right: 10px;
+}
+#services .section-content table td a{
+    text-decoration: none;
+    color: white;
+    font-family: Calistoga;
+}
+/* Znak dolaru */
+#services .section-content table td:nth-child(2):before{
+    content: "$";
+    width: 5px;
+    height: 5px;
+    color: white;
+}
+#services .section-content table tr:last-child td:last-child::before{
+    content: '';
+}
+#services .section-content table tr:first-child{
+    visibility: hidden;
+}
+/* Pokud se najede na nejakou polozku, dojde ke zmene barvy celeho jejiho radku (nazvu, ceny, tecek, ..) */
+#services .section-content table tr:hover a, 
+#services .section-content table tr:hover td:nth-child(2),
+#services .section-content table tr:hover td:nth-child(2):before,
+#services .section-content table tr:hover td:nth-child(1)::after{
+    color: lightgreen;
+    border-color: lightgreen;
+    font-size: 105%;
+    transition-duration: 300ms;
+}
+/* Vlozeni listecku na pomezi sekci */
+#contact::before{
+    content: '';
+    background-image: url('../img/custom/hr.svg');
+    width: 100%;
+    height: 100px;
+    display: block;
+    position: absolute;
+    top: -50px;
+}
+/* Kontakty */
+#contact{
+    background-image: url('../img/bg/bg-contact.jpg');
+    padding-top: 100px;
+    padding-bottom: 100px;
+    overflow: visible;
+    position: relative;
+} 
+#contact .heading {
+    text-align: center;
+}
+#contact .heading h2{
+    font-family: Calistoga;
+    text-transform: uppercase;
+    color: lightgreen;
+    letter-spacing: 0.2em;
+    font-size: 16px;
+}
+#contact .heading span{
+    font-family: Textile;
+    font-size: 24px;
+    color: white;
+}
+/* definice hlavniho tela, vytvoreni gridu */
+#contact .section-content{
+    width: 70%;
+    height: 80%;
+    display: grid;
+    grid-template-columns: 25% 65%;
+    grid-template-rows: 200px 500px;
+    grid-template-areas: 
+        'pict about'
+        'pict form'
+        'empty form';
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 50px;
+    overflow: visible;
+}
+/* Styl pro obrazek */
+#contact .section-content img{
+    grid-area: pict;
+    height: 400px;
+    object-fit: cover;
+    border-color: white;
+    border-width: 5px;
+    border-style: solid;
+    max-width: 100%;
+}
+/* Samotny formular */
+#contact .section-content form{
+    display: flex;
+    flex-direction: column;
+    grid-area: form;
+    margin-left: 40px;
+    width: 80%;
+    margin-top: 40px;
+    font-family: Spectral;
+}
+/* Definice textu popisu */
+#contact .section-content blockquote{
+    background-color: white;
+    margin-left: 5px;
+    margin-top: 0;
+    opacity: 0.8;
+    height: fit-content;
+}
+#contact .section-content blockquote span{
+    font-family: Spectral;
+    font-style: italic;
+    padding-left: 20px;
+}
+#contact .section-content blockquote p{
+    font-family: Spectral;
+    font-style: italic;
+    padding-left: 20px;
+    height: auto;
+    padding-right: 10px;
+}
+#contact .section-content blockquote ul{
+    margin-left: -20px;
+}
+#contact .section-content blockquote ul li{
+    display: inline;
+} 
+#contact .section-content blockquote ul li a{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    color: transparent;
+}
+#contact .section-content blockquote ul li a::before{
+    display: block;
+    content: '\f005';
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: green;
+}
+#contact .section-content blockquote ul li a:hover::before{
+    transform: scale(1.2);
+    transition-duration: 300ms;
+    
+}
+/* Nasleduje definice vzhledu samotneho formualare */
+#contact .section-content form input{
+    border-width: 5px;
+    border-color: white;
+    border-style: solid;
+    margin-top: 10px;
+    background-color: lightpink;
+    opacity: 0.8;
+    padding: 5px;
+}
+#contact .section-content form textarea{
+    margin-top: 10px;
+    background-color: lightgreen;
+    opacity: 0.8;
+    padding: 5px;
+    border: 5px white solid;
+}
+#contact .section-content form select{
+    margin-top: 10px;
+    background-color: lightgreen;
+    opacity: 0.8;
+    padding: 5px;
+    border: 5px white solid;
+}
+#contact .section-content form input[type="submit"]{
+    width: 200px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+/* Pokud je dana polozka valid, zmeni se jeji barva */
+#contact .section-content form input:valid{
+    background-color: lightgreen;
+}
+#contact .section-content input:required:valid {
+    background-color: lightgreen;
+}
+#contact .section-content input[type="submit"]:disabled{
+    background-color: white;
+}
+/* vlozeni listecku na pomzei sekci */
+#contact::after{
+    content: '';
+    background-image: url('../img/custom/hr.svg');
+    width: 100%;
+    height: 100px;
+    display: block;
+    position: absolute;
+    bottom: -50px;
+}
+/* definice pro footer */
+footer .section-content{
+    display: flex;
+    justify-content: space-between;
+    min-width: 768px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    height: 100%;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    border-left: 5px dotted lightgreen;
+    border-right: 5px dotted lightgreen;
+    background-image: url('../img/custom/gang.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+footer .section-content span:nth-child(1){
+    margin-left: 15px;
+    font-family: Spectral;
+    position: relative;
+}
+footer .section-content span a{
+    text-decoration: none;
+    color: darkgreen;
+}
+footer .section-content span:nth-child(2){
+    margin-right: 15px;
+    font-family: Calistoga;
+}
+/* definice pro sipecku pro navraceni zpet nahoru */
+#sweatshop{
+    border: 2px solid lightgreen;
+    padding: 20px;
+    color: lightgreen;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: white;
+    opacity: 0.6;
+}
+/* definice pro heyoooo bitches */
+#heyoooo{
+    display: none;
+    position: fixed;
+    width: 300px;
+    height: 120px;
+    background-color: white;
+    border-radius: 20px;
+    top: 80px;
+    z-index: 10;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 3px 3px 15px 15px green;
+}
+#heyoooo.open{
+    display: block;
+}
+#heyoooo img{
+    height: 80%;
+    float: left;
+}
+#heyoooo span b{
+    text-transform: uppercase;
+    font-family: Textile;
+    display: block;
+    margin-left: 100px;
+    font-size: 24px;
+    margin-top: 10px;
+    color: black;
+    font-style: normal;
+}   
+#heyoooo span{
+    font-family: Calistoga;
+    font-style: italic;
+    color: lightgreen;
+    font-size: 19px;
+    margin-left: 25px;
+    margin-top: 5px;
 }
