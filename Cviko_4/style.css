@@ -4,11 +4,6 @@
 body{
     width: 100%;
 }
-nav{
-    padding-top: 20px;
-    background-color: orange;
-    padding-bottom: 20px;
-}
 .Header {
     background-color: #3c1f0a;
     width: 100%;
@@ -29,6 +24,10 @@ h1{
     color: white;
     text-decoration: none;
 }
+nav{
+    height: 100%;
+    background-color: orange;
+}
 #nabidka{
     list-style-type: none;
     width: 100%;
@@ -36,23 +35,21 @@ h1{
     padding: 0;
 }
 #nabidka li{
-    display: inline;
+    display: inline-block;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+#nabidka li:hover{
+    background-color: #3c1f0a;
 }
 #nabidka li a{
     color: white;
     text-decoration: none;
-    margin-right: 10px;
+    padding: 0;
+    margin: 0;
+    margin-right: 5px;
+    margin-left: 5px;
     position: relative;
-}
-#nabidka li a:hover:after {
-    content: ''; 
-    position: absolute; 
-    left: 50%; 
-    bottom: -10px; 
-    border-left: 5px solid transparent; 
-    border-right: 5px solid transparent; 
-    border-top: 5px solid grey; 
-    transform: translateX(-50%); 
 }
 h2{
     color: #b15e23;
@@ -80,8 +77,10 @@ a{
     width: 100%;
 }
 .lecture a{
-    border-top: dotted 2px #b15e23;
-    width: 100%;
+    display: block;
+    border-bottom: dotted 2px #b15e23;
+    width: 70%;
+    margin-left: 100px;
 }
 .lecture_wrapper{
     padding: 10px;
@@ -139,7 +138,8 @@ a{
     
 }
 table{
-    width: 100%;
+    margin-left: 10px;
+    width: 90%;
 }
 .table_c{
     width: 100%;
@@ -225,7 +225,7 @@ table td{
 @media screen and (min-width: 992px){
     .middle{
         display: grid;
-        grid-template-columns: 70% 35%;
+        grid-template-columns: 70% 30%;
         grid-template-areas: 'left center';
     }
     .left_side{
