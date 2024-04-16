@@ -1,0 +1,243 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    width: 100%;
+}
+div {
+    width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    padding-left: 0;
+    height: auto;
+}
+.Header {
+    background-color: #3c1f0a;
+    width: 100%;
+    padding: 0;
+}
+.InsideHeader{
+    padding: 0;
+}
+h1{
+    font-size: 20px;
+    color: #d5a17c;
+    padding: 50px;
+    padding-left: 0;  
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+}
+.ITW{
+    font-size: 40px;
+    color: white;
+    text-decoration: none;
+}
+#nabidka{
+    list-style-type: none;
+    margin-left: -40px;
+}
+#nabidka li{
+    display: inline;
+}
+#nabidka li a{
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+    position: relative;
+}
+#nabidka li a:hover:after {
+    content: ''; 
+    position: absolute; 
+    left: 50%; 
+    bottom: -10px; 
+    border-left: 5px solid transparent; 
+    border-right: 5px solid transparent; 
+    border-top: 5px solid grey; 
+    transform: translateX(-50%); 
+}
+h2{
+    color: #b15e23;
+}
+h3{
+    width: 100%;
+    border-bottom: dotted;
+    border-color: #d5a17c;
+    margin-top: 10px;
+}
+a{
+    text-decoration: none;
+    color: #3c1f0a;
+}
+p{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.about{
+    display: flex;
+    flex-direction: column; 
+    width: 100%;
+    background-image: linear-gradient(to top, #f0f0f0, white);
+    align-items: center;
+    height: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.about p{
+    width: 1400px;
+}
+.about h2{
+    width: 1400px;
+    margin: auto;
+}
+.left_side {
+    display: grid;
+    grid-template-columns: 400px 400px;
+}
+.lecture_wrapper {
+    display: flex;
+    flex-direction: row;
+    max-width: 400px;
+  }  
+.lecture_wrapper img {
+    align-self: center;
+    margin-right: 20px;
+    width: 90px;
+    height: 90px;
+}
+  
+.lecture {
+    width: 400px;
+}
+.exercisewrapper{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+.exercise{
+    border-bottom: dotted;
+    border-color: #d5a17c;
+    display: flex;
+    flex-direction: row;
+    width: 500px;
+}
+.exercise img{
+    order: -2;
+    width: 75px;
+    height: 75px;
+    margin-right: 20px;
+    align-self: center;
+}
+.middle {
+    width: 1400px;
+    display: grid;
+    grid-template-columns: 800px 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.exercisewrapper {
+    background-image: linear-gradient(to right, #f0f0f0, white);
+    width: auto;
+    padding-left: 15px;
+}
+.Wrapper{
+    background-color: #3c1f0a;
+    width: 100%;
+    height: 100%;
+}
+.Wrapper h2{
+    color: white;
+}
+.Dict{
+    width: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.Dict dt{
+    float: left;
+    clear: left;
+    width: 100px;
+    text-align: left;
+    color: white;
+}
+.Dict dd{
+    text-align: right;
+}
+.Dict dd a{
+    color:#d5a17c;
+}
+.relatedsubj{
+    list-style-type:none;
+}
+.relatedsubj li::before{
+    content: '✓ ';
+    padding-right: 8px;
+    color: #d5a17c;
+}
+.relatedsubj li a{
+    color: #d5a17c;
+    
+}
+table{
+    border: 4px solid black;
+}
+table th{
+    background-color:#b15e23;
+    color: #EEEDEB;
+    border-bottom: 4px solid black;
+    border-right: 4px solid black;
+    border-top: 4px dotted black;
+    border-right: 4px dotted black;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+table td{
+    border-bottom: 2px solid grey;
+    border-top: 2px solid black;
+    text-align: center;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+.name{
+    text-align: left;
+    padding-right: 100px;
+    padding-left: 0px;
+}
+.exercisewrapper h3{
+    border-bottom: none;
+}
+.about_all {
+    display: grid;
+    grid-template-columns: 400px 400px;
+    grid-gap: 50px
+}
+
+@media only screen and (max-width: 575px) {
+
+    body {
+        width: 100%;
+    }
+    .Header {
+        width: 100%;
+        
+    }
+    .InsideHeader {
+        width: 100%;
+    }
+    .about{
+        padding: 20px;
+    }
+    .navigation{
+        background-color: orange;
+    }
+    #nabidka{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+    .middle{
+        display: flex;
+        flex-direction: column;
+    }
+    
+}
