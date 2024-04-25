@@ -1,0 +1,248 @@
+* {
+    margin: 0;
+}
+body{
+    width: 100%;
+}
+.Header {
+    background-color: #3c1f0a;
+    width: 100%;
+    padding: 0;
+}
+.Header h1{
+    padding: 10px;
+    padding-bottom: 30px;
+}
+h1{
+    font-size: 20px;
+    color: #d5a17c;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+}
+.ITW{
+    font-size: 40px;
+    color: white;
+    text-decoration: none;
+}
+nav{
+    height: 100%;
+    background-color: orange;
+}
+#nabidka{
+    list-style-type: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+#nabidka li{
+    display: inline-block;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+#nabidka li:hover{
+    background-color: #3c1f0a;
+}
+#nabidka li a{
+    color: white;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    margin-right: 5px;
+    margin-left: 5px;
+    position: relative;
+}
+h2{
+    color: #b15e23;
+}
+a{
+    text-decoration: none;
+    color: #3c1f0a;
+}
+.about{
+    background-image: linear-gradient(to top, #f0f0f0, white);
+    align-items: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.about p{
+    padding: 10px;
+}
+.about h2{
+    padding-left: 10px;
+}
+.left_side h2{
+    padding: 10px;
+}
+.lecture h3{
+    width: 100%;
+}
+.lecture a{
+    display: block;
+    border-bottom: dotted 2px #b15e23;
+    width: 70%;
+    margin-left: 100px;
+}
+.lecture_wrapper{
+    padding: 10px;
+}
+.lecture_wrapper img{
+    float: left;
+    height: 75px;
+    margin-right: 10px;
+}
+.exercise img{
+    order: -2;
+    width: 75px;
+    height: 75px;
+    margin-right: 20px;
+    align-self: center;
+}
+.exercisewrapper {
+    background-image: linear-gradient(to right, #f0f0f0, white);
+    padding-left: 15px;
+}
+.Wrapper{
+    background-color: #3c1f0a;
+}
+.Wrapper h2{
+    color: white;
+}
+.Dict{
+    width: 80%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.Dict dt{
+    float: left;
+    clear: left;
+    width: 100px;
+    text-align: left;
+    color: white;
+}
+.Dict dd{
+    padding-left: 10px;
+}
+.Dict dd a{
+    color:#d5a17c;
+}
+.relatedsubj{
+    list-style-type:none;
+}
+.relatedsubj li::before{
+    content: '✓ ';
+    padding-right: 8px;
+    color: #d5a17c;
+}
+.relatedsubj li a{
+    color: #d5a17c;
+    
+}
+table{
+    margin-left: 10px;
+    width: 90%;
+}
+.table_c{
+    width: 100%;
+}
+table th{
+    background-color:#b15e23;
+    opacity: 0.7;
+    color: black;
+}
+table td{
+    text-align: center;
+}
+.name{
+    text-align: left;
+}
+.exercisewrapper{
+    background-color: lightgrey;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.exercisewrapper h3{
+    border-bottom: none;
+}
+.exercise{
+    border-bottom: dotted 2px brown;
+}
+.exercise p {
+    padding: 10px;
+}
+.about_all{
+    padding: 15px;
+}
+.relatedsubj{
+    padding: 15px;
+}
+.table_c{
+    margin-right: 20px;
+}
+@media screen and (max-width: 575px) {
+    #nabidka{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+    .middle{
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
+@media screen and (min-width: 768px) {
+    .middle{
+        display: grid;
+        grid-template-columns: 60% 40%;
+        grid-template-areas: 'left right';
+    }
+    .left_side{
+        grid-area: left;
+    }
+    .exercise{
+        font-size: 0.7em;
+    }
+    .exercise img{
+        height: 40px;
+        width: 40px;
+    }
+    .lecture{
+        font-size: 0.8em;
+    }
+    .about_all{
+        display: flex;
+        flex-direction: row;
+    }
+    .Dict{
+        width: 300px;
+    }
+    .related_subj{
+        margin-left: 200px;
+    }
+}
+
+@media screen and (min-width: 992px){
+    .middle{
+        display: grid;
+        grid-template-columns: 70% 30%;
+        grid-template-areas: 'left center';
+    }
+    .left_side{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+    .left_side h2{
+        width: 100%;
+    }
+    .lecture_wrapper{
+        display: block;
+        width: 40%;
+        margin-left: 30px;
+    }
+    .lecture_wrapper img{
+        height: 80px;
+        width: 80px;
+    }
+}
