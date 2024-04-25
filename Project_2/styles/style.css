@@ -1,0 +1,605 @@
+/**
+*
+*   @author Roman Machala (xmacha86)
+*   @date 25.4.2024
+*
+*   Prohlasuji, ze vse, co se nachazi v tomto souboru a v souborech s timto spojenym, je me autorske dilo.
+*
+*
+*   Pri implementaci jsem se lehce inspiroval nekterymi castmi z prvniho projektu anebo "featurami", ktere se mi zalibily ruzne z internetu. Zdroje inspirace a zdroje, odkud jsem cerpal
+*   vlastnosti pro implementaci jsou popsany nize.
+*
+*   !!! 
+*       Pro projekt jsem volil takovou sadu obrazku, aby co nejvice ladila s celkovym vzhledem stranky (snazil jsem se o esteticky vzhled, barven do tmave sede/cerne)
+*       chtel jsem vlozit svoje vlastni obrazky, jenze zrovna takovyto styl obrazku by vyzadoval profesionalni pristup a na to bohuzel nebyl cas. 
+*   !!!
+*/
+
+
+/*
+*
+*   Takhle v uvodu bych chtel uvest nejdulezitejsi casti (narocnejsi, ktere jsem pouzil a jakym zpusobem jsem implementoval), aby se nemusely dohledavat v celem dokumentu.
+*   
+*
+*
+*   Ikonky pouzite v projektu:
+*           - pouzil jsem ikonky z Font Awesome 6
+*
+*   Casti inspirovane z prvniho projektu:
+*           - parallax scrolling (aplikace hned v uvodu a dale v sekci Projects)
+*           - animace schovani elementu, pokud nesjou videt, pri scrollovani jejich nasledne zobrazeni (popsano v sekci lazy loading / scroll reveal)
+*               
+*
+*   Lazy loading / scroll reveal:
+*           - Studoval jsem nasledujici video: https://www.youtube.com/watch?v=rENxM-2Ek9E&ab_channel=CodeWellTech
+*               + jsem se dival na scrollrevealjs.org a revealjs.com
+*           - kontroluji, zda je element ve viewportu (ten je jeste snizen o x pixelu zeshora a zdola, aby animace byla spustena "pozdeji")
+*           - nasledne je elementum pridana trida visible, aby doslo k jejich zobrazeni (reseno pomoci transition, opacity a transform - lehke posunuti zespodu)
+*           - pokud chci, aby dany element byl "animovan", staci mu pridat tridu hidden, ostatni elementy nejsou brany v potaz        
+*   
+*   3D animace projektu:
+*           - tyka se casti projects
+*           - jednotlive projekty jsou nataceny ke smeru pozice mysi, vuci stredu obrazovky
+*           - pro tuto cast jsem studoval 3D animace za pomoci JS: https://medium.com/@chengdai/create-3d-animation-for-your-website-by-using-javascript-7619f8bbde9 
+*           - pomoci vlastnosti transform-style: preserve-3d a pseudoelementu ::before, vznika efekt 3D obejktu
+*           - element ::before ma inset -1.1rem, ktery jej dela lehce vetsi nez rodicovsky element, dale pomoci transform: translateZ (pracuje se s 3D objektem, je proto treba pouzit 
+*               translate a ne z-index) je ::before element presunut za tento element. Pri nakloneni dochazi tak k efektu 3D objektu.
+*           - vyuziva se jeste vlastnosti perspective, rotateX a rotateY, kterou nastavuje danemu elementu javascript, perspective je pevny, rotate je dan podle pozice mysi
+*           - uhel natoceni se pocita jako pomer vzdalenosti mysi od stredu a podelene vzdalenosti stredu od kraje: (positionX - centerX) / centerX, toto je 
+*               dale vynasobene maximalnim uhlem natoceni (pro lepsi viditelnost doporucuji zvysit uhel a trosku si s tim pohrat :D), ziskame tak hodnoty od 0 - max_uhel
+*
+*
+*   Navigace:
+*           - resil jsem pomoci position: fixed a z-indexu, aby byla vzdy dostupna a viditelna.
+*           - pro zobrazeni ve sloupci jsem pouzil display: flex
+*
+*   Obrazky:
+*           - nektere obrazky jsou vlozeny pomoci znacky <img>, nektere (projekty, skoly) jsem vkladal jako pozadi do vlasniho <div>
+*               z duvodu lepsi editovatelnosti
+*           - za obrazkem je vlozena barva pozadni odpovidajici barve obrazku, pro pripad, ze by se obrazek nenacetl
+*
+*   Lorem ipsum:
+*           - pro nektere casti jsem se rozhodl pouzit lorem ipsum, protoze mi dane casti pripadaly trosku chabe a nebo jsem nemohl prijit na nic
+*               vhodneho co do dane sekce vlozit.
+*
+*
+*   
+*
+*       Pokud nejaky popis zde chybi, urcite bude popsan nize, razeni jednotlivych stylu sekci odpovida razeni sekci dokumentu. 
+*/
+body{
+    width: 100%;
+    margin: 0;
+}
+
+/* Header, navigation */
+#header-content{
+    height: 500px;
+    background-color: black;                            /* pro pripad, ze by se obrazek nenacetl */
+    /* Pouzil jsem parallax scrolling efekt, napad prevzat z 1. projektu */
+    background-image: url('../images/background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    /* box-shadow umoznuje lepsi prechod mezi jednotlivymi sekcemi (neni tam tak tvrdy skok, pokud se pozadi jednotlivych sekci vyrazne lisi) */
+    box-shadow: inset 0px 0px 50px 50px rgba(23, 23, 23, 23);
+}
+#header-content .header-content-name{
+    /* Zobrazeni nadpisu pod sebe */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 30px;
+}
+#header-content .header-content-name h1{
+    /* Odsazeni od prvniho nadpisu od druheho */
+    padding-top: 100px;
+    color: #edf2f4;
+}
+#header-content .header-content-name h2{
+    /* Odsazeni od prvniho nadpisu od druheho */
+    padding-top: 10px;
+    color: #edf2f4;
+    text-transform: uppercase; /* prevedeni na uppercase */
+}
+#navigation{
+    background: rgb(0,0,0);
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(111,111,111,1) 50%, rgba(0,0,0,1) 100%);
+    /* Pro linear gradient jsem vyuzil https://cssgradient.io/ , je pekne videt i vysledny efekt*/
+    border: 2px solid white;
+    position: fixed; /* Vzdy dostupna navigace */
+    right: 2%;
+    top: 50%;
+    transform: translateY(-50%);    /* Zarovnani na stred v ose Y */
+    height: 70%;                    /* Vzdy zabira velikost 70% v ose Y */
+    width: 70px; 
+    z-index: 1000;  
+    border-radius: 30px;
+    opacity: 0.4;
+    transition: all ease-out 0.5s;  /* Pri zmene opacity, pri najeti mysi na navigaci */
+}
+#navigation:hover{
+    /* Zmena opacity pri najeti kurzorem na navigaci */
+    opacity: 1;
+    transition: all ease-in 0.5s;
+}
+#navigation ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    /* Flex pro zobrazeni navigace pod sebe, dalo se resit i jinak, toto byl pro me nejjednodussi zpusob */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* rovnomerne odsazeni elementu od sebe */
+}
+#navigation ul li a i{
+    /* definice barvy a velikosti */
+    color: white;
+    font-size: 35px;
+    transition: all ease-in-out 0.6s;   /* Pri najeti na ikonku */
+}
+#navigation .nav-element{
+    /* Blizsi nastaveni jednotlivych ikonek */
+    margin: 30px 0;
+    text-decoration: none;
+}
+#navigation ul li a i:hover{
+    /* Pri najeti na ikonku v navigaci se zmeni jeji barva a trosku se posune v ose Y smerem nahoru */
+    transform: translateY(-10px);
+    color: #F7C566;
+    transition: all ease-in-out 0.6s;
+}
+
+/* Hlavni cast dokumentu */
+#main-content{
+    /* box-shadow umoznuje lepsi prechod mezi jednotlivymi sekcemi (neni tam tak tvrdy skok, pokud se pozadi jednotlivych sekci vyrazne lisi) */
+    box-shadow: inset 0px 0px 50px 50px rgba(23, 23, 23, 23);
+    background-color: black; /* nastvaime cernou barvu pozadi, kdyby nahodou se nenacetly obrazky */
+}
+
+/* Welcome content, predstaveni */
+#welcome-content{
+    /* box-shadow umoznuje lepsi prechod mezi jednotlivymi sekcemi (neni tam tak tvrdy skok, pokud se pozadi jednotlivych sekci vyrazne lisi) */
+    box-shadow: inset 0px 0px 50px 50px rgba(23, 23, 23, 23);
+    width: 100%;
+    min-height: 800px;  /* Minimalni pevna vyska */
+    background: rgb(0,0,0);
+    /* Opet pro gradient jsem vyuzil https://cssgradient.io/ */
+    background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(113,113,113,1) 7%, rgba(0,0,0,1) 37%);
+    padding-top: 30px;
+}
+#welcome-content #welcome-header{
+    /* Definice stylu pro nadpis */
+    padding-left: 30px;
+    color: white;
+    font-family: monospace;
+}
+#welcome-content #welcome-header h1{
+    font-size: 35px;
+}
+#welcome-content #welcome-header h2{
+    font-size: 28px;
+}
+#welcome-content #about-content{
+    /* Definice stylu popisu v teto sekci */
+    width: 70%;
+    font-size: 20px;
+    font-family: monospace;
+    padding: 30px;
+    color: white;
+}
+#welcome-content .image-wrapper img{
+    /* Definice stylu pro obrazek */
+    float: right;
+    width: 700px;   
+    opacity: 0.5;
+    transition: all ease-in 0.5s;   /* pro efekt hover */
+}
+#welcome-content .image-wrapper img:hover{
+    opacity: 1;
+    transition: all ease-in 0.5s;
+    width: 800px;
+    /* Pri najeti na obrazek dojde k jeho zvetseni */
+}
+
+/* Education content, skola */
+#education-content{
+    /*  background-color: #31363F; */
+    /* background-color: #171717; */
+    background: rgb(23,23,23);
+    background: radial-gradient(circle, rgba(23,23,23,1) 0%, rgba(84,84,84,0.8883928571428571) 49%, rgba(23,23,23,1) 100%);
+    /* Opet pro gradient jsem vyuzil https://cssgradient.io/ */
+    /* box-shadow umoznuje lepsi prechod mezi jednotlivymi sekcemi (neni tam tak tvrdy skok, pokud se pozadi jednotlivych sekci vyrazne lisi) */
+    box-shadow: inset 0px 0px 50px 50px rgba(23, 23, 23, 23);
+    color: white;
+    /* definice stylu popisu pro sekci vzdelani */
+    font-size: 24px;
+    font-family: monospace;
+    padding-bottom: 50px;
+    padding-top: 50px;
+    width: 100%;
+}
+#education-content h3{
+    /* Definice stylu pro nadpis */
+    text-transform: uppercase;
+    padding-left: 30px;
+}
+#education-content .school-content{
+    /* Definice stylu pro polozku, ktera obsahuje obrazek, popis daneho vzdelani, skoly */
+    min-height: 450px;
+    width: 85%;
+    transition: all ease-in-out 0.5s;   /* pro efekt hover */
+}
+#education-content .school-content:nth-of-type(1){
+    padding-left: 30px;
+    /* Prvni element ma obrazek, ktery text obteka zprava, proto odsazeni obrazku od okraje zleva */
+}
+#education-content .school-content:nth-of-type(1) h3{
+    text-align: left;
+    /* zarovani textu smerem k obrazku (obteka jej zprava) */
+}
+#education-content .school-content:nth-of-type(1) p{
+    text-align: left;
+    /* zarovnani textu smerem k obrazku (pbteka jej zprava) */
+}
+#education-content .school-content:nth-of-type(2){
+    margin-left: auto;
+    padding-right: 30px;
+    /* Druhy obrazek je textem obtekan zleva, proto odsazeni obrazku od okraje zprava */
+}
+#education-content .school-content:nth-of-type(2) h3{
+    text-align: right;
+    /* Text obteka obrazek zprava, proto zarovani doprava */
+}
+#education-content .school-content:nth-of-type(2) p{
+    text-align: right;
+    /* Text obteka obrazek zprava, proto zarovanni doprava */
+}
+#education-content .school-content .image-wrapper{
+    background-color: white;
+    height: 400px;
+    width: 30%;
+    border-radius: 20px;
+    transition: all ease-in-out 0.5s;
+    /* Pri najeti na obrazek se obrazek zvetsuje */
+}
+#education-content .school-content:nth-of-type(1) .image-wrapper{
+    /* Definice stylu prvniho obrazku pro prvni skolu */
+    background-image: url('../images/school_1.jpg');    /* Reseno jako pozadi */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    margin-right: 30px;
+}
+#education-content .school-content:nth-of-type(2) .image-wrapper{
+    /* Definice stylu druheho obrazku pro druhou skolu */
+    background-image: url('../images/school_2.jpg');    /* Reseno jako pozadi */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: right;
+    margin-left: 30px;
+}
+#education-content .school-content:hover{
+    /* pri najeti na obrazek dojde k jeho zvetseni */
+    width: 95%;
+    transition: all ease-in-out 0.5s;
+}
+
+/* Projects */
+#projects-content{
+    background-color: black; /* pro pripad, ze by se obrazek nenacetl */
+    background-image: url('../images/background-projects.jpg');
+    /* box-shadow umoznuje lepsi prechod mezi jednotlivymi sekcemi (neni tam tak tvrdy skok, pokud se pozadi jednotlivych sekci vyrazne lisi) */
+    box-shadow: inset 0px 0px 50px 50px rgba(23, 23, 23, 23);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    padding-top: 30px;
+    /* Opet inspirace z prvniho projektu, tzv. parallax scrolling efekt */
+}
+#projects-content h3{
+    /* Definice stylu pro nadpis */
+    text-transform: uppercase;
+    color: white;
+    font-size: 35px;
+    font-family: monospace;
+    margin-left: 30px;
+}
+#projects-content #projects-wrapper{
+    /* Definice stylu pro sekci projects */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;    /* Pokud dojde ke zmenseni obrazovky, projekty se zacnou radit pod sebe */
+    align-items: center;
+    justify-content: space-around;  /* Rovnomerne mezery mezi projekty a okolo nich */
+    padding: 100px;
+}
+#projects-content #projects-wrapper .project{
+    position: relative; /* pro element ::before */
+    min-width: 40%;
+    max-width: 45%;
+    /* trosku jsem si hral s min a max sirkama, toto mi sedelo nejvice, trosku jsem se v tom ztracel, bylo to spise fck around and find out */
+    border: 2px solid #F1EFEF;
+    border-radius: 30px;
+    padding: 10px;
+    margin-bottom: 30px;
+    transform-style: preserve-3d;
+    /* preserve-3d je vlastnost, aby se elementy chovaly jako 3d objekt */
+    /* studoval jsem vlastnosti zde: https://dev.to/martinp/how-to-do-stunning-3d-with-pure-htmlcss-ah */
+    background-color: white;
+    /* Jeste je tu vlastnost transform, ktera nastavuje perspective, rotateX a rotateY, vse je reseno pomoci js */
+}
+#projects-content #projects-wrapper .project p{
+    /* Definice stylu popisu jednotlivych projektu */
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 20px;
+    font-family: monospace;
+}
+#projects-content #projects-wrapper .project h3{
+    /* Definice stylu nadpisu jednotlivych projektu */
+    padding-bottom: 20px;
+    font-size: 23px;
+    font-family: monospace;
+    color: black;
+}
+#projects-content #projects-wrapper .project::before{
+    /* Vytvoreni efektu 3D objektu */
+    content: '';
+    border-radius: inherit; /* inherit border radius od parenta */
+    background-color: white;
+    filter: blur(5px);  /* rozmaze dany element, vytvari efekt stinu */
+    opacity: 0.5;
+    position: absolute; /* absolutne zarovnane vuci rodici */
+    inset: -1.1rem; /* element bude o neco vetsi jako rodic, diky zapornemu znamenku */
+    transform: translateZ(-50px);   /* Pracujeme s 3D objektem, diky vlastnosti transfrom-style: preserve-3D u rodice, proto je treba pouzit translateZ pro posunuti v ose Z (ve 3D prostoru) */
+}
+#projects-content #projects-wrapper .project .image-wrapper{
+    /* Definice stylu obrazku pro projekty */
+    background-color: black; /* Pokud se nam nenacte obrazek */
+    width: 80%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 20px;
+    margin: auto;
+    transition: all ease-in 0.5s;   
+    opacity: 0.7;
+}
+#projects-content #projects-wrapper .project:nth-child(1) .image-wrapper{
+    /* Volil jsem vlozeni obrazku jako pozadi, hezci vzhled, mene nutnych uprav */
+    background-image: url('../images/project_1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#projects-content #projects-wrapper .project:nth-child(2) .image-wrapper{
+    /* Volil jsem vlozeni obrazku jako pozadi, hezci vzhled, mene nutnych uprav */
+    background-image: url('../images/project_2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#projects-content #projects-wrapper .project:nth-child(3) .image-wrapper{
+    /* Volil jsem vlozeni obrazku jako pozadi, hezci vzhled, mene nutnych uprav */
+    background-image: url('../images/project_3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#projects-content #projects-wrapper .project:nth-child(4) .image-wrapper{
+    /* Volil jsem vlozeni obrazku jako pozadi, hezci vzhled, mene nutnych uprav */
+    background-image: url('../images/project_4.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#projects-content #projects-wrapper .project .image-wrapper:hover{
+    /* Pri najeti na obrazek, dojde k jeho zvetseni a zmene opacity */
+    width: 90%;
+    transition: all ease-in 0.5s;
+    opacity: 1;
+}
+
+/* Portfolio */
+#portfolio-content{
+    width: 100%;
+    display: flex;
+    background: rgb(0,0,0);
+    background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(113,113,113,1) 19%, rgba(0,0,0,1) 47%);
+    /* pro gradient jsem vyuzival https://cssgradient.io/ */
+    /* box-shadow umoznuje lepsi prechod mezi jednotlivymi sekcemi (neni tam tak tvrdy skok, pokud se pozadi jednotlivych sekci vyrazne lisi) */
+    box-shadow: inset 0px 0px 50px 50px rgba(23, 23, 23, 23);
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+#portfolio-content #portfolio-about p{
+    /* Definice stylu popisu  */
+    color: white;
+    font-size: 19px;
+    font-family: monospace;
+    margin-bottom: 90px;
+}
+#portfolio-content #portfolio-person{
+    /* Definice stylu pro cast obsahujici obrazek a  informace o osobe */
+    width: 25%;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+#portfolio-content #portfolio-person .image-wrapper img{
+    /* Definice stylu pro obrazek */
+    width: 90%;
+    height: 30%;
+    border-radius: 160px;
+    border: 4px solid #F1EFEF;
+}
+#portfolio-content #portfolio-about{
+    width: 60%;
+}
+#portfolio-content #portfolio-about #portfolio-skills{
+    margin-bottom: 50px;
+}
+#portfolio-content #portfolio-about #portfolio-skills #html,
+#portfolio-content #portfolio-about #portfolio-skills #css,
+#portfolio-content #portfolio-about #portfolio-skills #python,
+#portfolio-content #portfolio-about #portfolio-skills #java{
+    /* Definice stylu pro jednotlive skilly tykajici se prog. jazyku */
+    display: flex;  /* zarovanni elementu vedle sebe */
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 75%;
+}
+#portfolio-content #portfolio-about #portfolio-skills #html img,
+#portfolio-content #portfolio-about #portfolio-skills #css img,
+#portfolio-content #portfolio-about #portfolio-skills #python img,
+#portfolio-content #portfolio-about #portfolio-skills #java img{
+    /* definice stylu pro obrazky pro programovaci jazyky */
+    width: 100px;
+    height: 100px;  /* pevna sirka */
+}
+#portfolio-content #portfolio-about #portfolio-skills #html .progress-wrapper,
+#portfolio-content #portfolio-about #portfolio-skills #css .progress-wrapper,
+#portfolio-content #portfolio-about #portfolio-skills #python .progress-wrapper,
+#portfolio-content #portfolio-about #portfolio-skills #java .progress-wrapper{
+    /* definice stylu progress baru */
+    border-radius: 7px;
+    width: 90%;
+    height: 25px;
+    background-color: #F1EFEF;
+    border: 1px solid white;
+}
+#portfolio-content #portfolio-about #portfolio-skills #html .progress-wrapper .progress,
+#portfolio-content #portfolio-about #portfolio-skills #java  .progress-wrapper .progress{
+    /* definice stylu pro progress bar (HTML, JAVA) */
+    border-radius: inherit;
+    width: 45%;
+    background-color: #F7C566;
+    height: 25px;
+    transition: all ease-out 1s;
+}
+#portfolio-content #portfolio-about #portfolio-skills #css  .progress-wrapper .progress{
+    /* definice stylu pro progress bar (CSS) */
+    border-radius: inherit;
+    width: 23%;
+    background-color: #D74B76;
+    height: 25px;
+    transition: all ease-out 1s;
+}
+#portfolio-content #portfolio-about #portfolio-skills #python  .progress-wrapper .progress{
+    /* definice stylu pro progress bar (PYTHON) */
+    border-radius: inherit;
+    width: 95%;
+    background-color: #75A47F;
+    height: 25px;
+    transition: all ease-out 1s;
+}
+#portfolio-content #portfolio-about #portfolio-skills #html .progress-wrapper .progress:hover,
+#portfolio-content #portfolio-about #portfolio-skills #css .progress-wrapper .progress:hover,
+#portfolio-content #portfolio-about #portfolio-skills #python .progress-wrapper .progress:hover,
+#portfolio-content #portfolio-about #portfolio-skills #java .progress-wrapper .progress:hover{
+    /* pri najeti na dany progress bar dojde k jeho "dobehnuti" (? nevim jak to nazvat) */
+    width: 100%;
+    transition: all ease-in 1s;
+}
+#portfolio-content #portfolio-person dl{
+    /* Definice stylu pro informace o osobe */
+    /* Grid jsem volil, protoze mi jednoduse umoznuje rozmistit elementy */
+    display: grid;
+    grid-gap: 4px 16px;
+    grid-template-columns: max-content;
+}
+#portfolio-content #portfolio-person dl dt,
+#portfolio-content #portfolio-person dl dd,
+#portfolio-content #portfolio-person dl dd a{
+    /* Definice stylu textu  */
+    color: white;
+    text-decoration: none;
+}
+#portfolio-content #portfolio-person dl dt{
+    /* Definice stylu textu */
+    font-size: 24px;
+}
+#portfolio-content #portfolio-person dl dd{
+    /* Definice stylu textu */
+    font-size: 20px;
+    margin: 0;
+    grid-column-start: 2;
+    padding-left: 20px;
+}
+
+/* Contact me */
+#contact-content{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    /* box-shadow umoznuje lepsi prechod mezi jednotlivymi sekcemi (neni tam tak tvrdy skok, pokud se pozadi jednotlivych sekci vyrazne lisi) */
+    box-shadow: inset 0px 0px 50px 50px rgba(23, 23, 23, 23);
+    width: 100%;
+}
+#contact-content h3{
+    /* Definice stylu nadpisu */
+    text-transform: uppercase;
+    color: white;
+    font-size: 30px;
+    font-family: monospace;
+    padding-left: 30px;
+}
+#contact-content #contact{
+    /* rozlozeni flex pro usporadani vodorovne */
+    display: flex;
+    justify-content: space-between; /* rovnomerne odsazeni elementu od sebe */
+    padding-left: 30%;  /* pridan padding left a right pro zarovnani elementu vice do stredu */
+    padding-right: 30%;
+}
+#contact-content #contact #instagram a i,
+#contact-content #contact #facebook a i,
+#contact-content #contact #github a i{
+    /* definice stylu pro ikonky */
+    font-size: 70px;
+    color: white;
+    transition: all ease-in-out 1s;
+}
+#contact-content #contact #instagram a i:hover,
+#contact-content #contact #facebook a i:hover,
+#contact-content #contact #github a i:hover{
+    /* pri najeti mysi na ikonku se lehce posune v ose Y a zmeni se ji barva */
+    transform: translateY(-15px);
+    transition: all ease-in-out 0.6s;
+    color: #F7C566;
+}
+
+/* Footer */
+#footer{
+    width: 100%;
+}
+#footer .footer-content{
+    /* pro gradient jsem pouzil https://cssgradient.io/ */
+    background: rgb(23,23,23);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(111,111,111,1) 50%, rgba(0,0,0,1) 100%);
+    /* box-shadow umoznuje lepsi prechod mezi jednotlivymi sekcemi (neni tam tak tvrdy skok, pokud se pozadi jednotlivych sekci vyrazne lisi) */
+    box-shadow: inset 0px 0px 20px 20px rgba(23, 23, 23, 23);
+    display: flex;
+    justify-content: space-between; /* rozlozeni elementu od sebe do kraju */
+    padding: 50px;
+}
+#footer .footer-content span{
+    color: white;
+}
+
+/* Specialni styly pro skrute elementy, ktere se zobrazi az pri scrollovani  */
+.hidden{
+    opacity: 0;                                                     /* Element neni videt */
+    transform: translateY(100px);                                    /* Je posunut smerem dolu, vytvori efekt posunuti elemntu na jeho pozici */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* Delka trvani animace */
+}
+/* Styl pro viditelne elementy */
+.visible{
+    opacity: 1;                 /* Zvyseni viditelnosti  */
+    transform: translateY(0px); /* Posunuti zpet */
+    transition: all 0.6s ease-out;  /* delka animace */
+}
