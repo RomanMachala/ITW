@@ -78,3 +78,24 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('scroll', revealOnScroll); // pridame listener pri scrollovani
     revealOnScroll(); // zavolame funkci 
 });
+
+/*
+*
+*   Script pro hamburger menu pro mobilni zarizeni
+*   Inpirace dle posledniho cviceni z predmetu ITW
+*   implicitne je #hamburger-menu div nastaveno na display: none, pro mobilni zarizeni je pak na display: block
+*   pokud se na nej klikne, dojde k rozbaleni navigace, ktere zabere 100% obrazvoky na vysku i sirku
+*
+*   nic moc jsem k tomu nemusel studovat, jelikoz tato cast (obdoba) byla soucasti posledniho cviceni (pokud bude nekdo dohledavat, na cviceni jsem nebyl :D, ale delal jsem si jej doma)
+*  
+*/
+document.querySelector('#hamburger-menu').addEventListener('click', function() {
+    var navigation = document.querySelector('#navigation');
+    if (navigation.style.display === 'flex') {
+        navigation.style.display = 'none';
+    } else {
+        navigation.style.display = 'flex';
+    }
+});
+
+

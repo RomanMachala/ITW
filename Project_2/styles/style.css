@@ -53,6 +53,11 @@
 *           - resil jsem pomoci position: fixed a z-indexu, aby byla vzdy dostupna a viditelna.
 *           - pro zobrazeni ve sloupci jsem pouzil display: flex
 *
+*   Navigace pro mobilni zarizeni:
+*           - inspirace poslednim cvicenim, kdy jsem pouzil hamburger menu
+*
+*
+*
 *   Obrazky:
 *           - nektere obrazky jsou vlozeny pomoci znacky <img>, nektere (projekty, skoly) jsem vkladal jako pozadi do vlasniho <div>
 *               z duvodu lepsi editovatelnosti
@@ -63,6 +68,11 @@
 *               vhodneho co do dane sekce vlozit.
 *
 *
+*   Mobilni zarizeni:
+*           - vetsina casti se vubec nemeni, ale...
+*           - pokud nektere casti byly usporadany vedle sebe (projekty, portfolio informace), jsou zarovanny pomoci display: flex; flex-direction: column (pod sebe)
+*           - lehce jsem si pohral pouze s paddingem a vice mene se nic moc nemeni
+*           - nejvetsi zmeny se dostala navigace
 *   
 *
 *       Pokud nejaky popis zde chybi, urcite bude popsan nize, razeni jednotlivych stylu sekci odpovida razeni sekci dokumentu. 
@@ -103,55 +113,7 @@ body{
     color: #edf2f4;
     text-transform: uppercase; /* prevedeni na uppercase */
 }
-#navigation{
-    background: rgb(0,0,0);
-    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(111,111,111,1) 50%, rgba(0,0,0,1) 100%);
-    /* Pro linear gradient jsem vyuzil https://cssgradient.io/ , je pekne videt i vysledny efekt*/
-    border: 2px solid white;
-    position: fixed; /* Vzdy dostupna navigace */
-    right: 2%;
-    top: 50%;
-    transform: translateY(-50%);    /* Zarovnani na stred v ose Y */
-    height: 70%;                    /* Vzdy zabira velikost 70% v ose Y */
-    width: 70px; 
-    z-index: 1000;  
-    border-radius: 30px;
-    opacity: 0.4;
-    transition: all ease-out 0.5s;  /* Pri zmene opacity, pri najeti mysi na navigaci */
-}
-#navigation:hover{
-    /* Zmena opacity pri najeti kurzorem na navigaci */
-    opacity: 1;
-    transition: all ease-in 0.5s;
-}
-#navigation ul{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    /* Flex pro zobrazeni navigace pod sebe, dalo se resit i jinak, toto byl pro me nejjednodussi zpusob */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between; /* rovnomerne odsazeni elementu od sebe */
-}
-#navigation ul li a i{
-    /* definice barvy a velikosti */
-    color: white;
-    font-size: 35px;
-    transition: all ease-in-out 0.6s;   /* Pri najeti na ikonku */
-}
-#navigation .nav-element{
-    /* Blizsi nastaveni jednotlivych ikonek */
-    margin: 30px 0;
-    text-decoration: none;
-}
-#navigation ul li a i:hover{
-    /* Pri najeti na ikonku v navigaci se zmeni jeji barva a trosku se posune v ose Y smerem nahoru */
-    transform: translateY(-10px);
-    color: #F7C566;
-    transition: all ease-in-out 0.6s;
-}
+
 
 /* Hlavni cast dokumentu */
 #main-content{
@@ -602,4 +564,168 @@ body{
     opacity: 1;                 /* Zvyseni viditelnosti  */
     transform: translateY(0px); /* Posunuti zpet */
     transition: all 0.6s ease-out;  /* delka animace */
+}
+
+@media (min-width: 576px){
+    #navigation{
+        background: rgb(0,0,0);
+        background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(111,111,111,1) 50%, rgba(0,0,0,1) 100%);
+        /* Pro linear gradient jsem vyuzil https://cssgradient.io/ , je pekne videt i vysledny efekt*/
+        border: 2px solid white;
+        position: fixed; /* Vzdy dostupna navigace */
+        right: 2%;
+        top: 50%;
+        transform: translateY(-50%);    /* Zarovnani na stred v ose Y */
+        height: 70%;                    /* Vzdy zabira velikost 70% v ose Y */
+        width: 70px; 
+        z-index: 1000;  
+        border-radius: 30px;
+        opacity: 0.4;
+        transition: all ease-out 0.5s;  /* Pri zmene opacity, pri najeti mysi na navigaci */
+    }
+    #navigation:hover{
+        /* Zmena opacity pri najeti kurzorem na navigaci */
+        opacity: 1;
+        transition: all ease-in 0.5s;
+    }
+    #navigation ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        /* Flex pro zobrazeni navigace pod sebe, dalo se resit i jinak, toto byl pro me nejjednodussi zpusob */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between; /* rovnomerne odsazeni elementu od sebe */
+    }
+    #navigation ul li a i{
+        /* definice barvy a velikosti */
+        color: white;
+        font-size: 35px;
+        transition: all ease-in-out 0.6s;   /* Pri najeti na ikonku */
+    }
+    #navigation .nav-element{
+        /* Blizsi nastaveni jednotlivych ikonek */
+        margin: 30px 0;
+        text-decoration: none;
+    }
+    #navigation ul li a i:hover{
+        /* Pri najeti na ikonku v navigaci se zmeni jeji barva a trosku se posune v ose Y smerem nahoru */
+        transform: translateY(-10px);
+        color: #F7C566;
+        transition: all ease-in-out 0.6s;
+    }
+    #hamburger-menu{
+        /* hamburger menu je dostupne pouze pro mobilni zarizeni */
+        display: none;
+    }
+}
+
+/* Styl pro mobilni zarizeni */
+@media (max-width: 576px) {
+    /* Styl pro hamburger menu, navigace a uvodni informace */
+    #hamburger-menu {
+        position: fixed;    /* Vzdy viditelne */
+        top: 0; /* umisteno nahore */
+        left: 0;
+        display: block; 
+        cursor: pointer;
+        height: 7%;
+        width: 100%;    /* zabira 100% sirky zarizeni */
+        background-color: white;
+        z-index: 1000;  /* Vzdy nahore nad elementy */
+        font-size: 40px;
+        padding-left: 10px;
+        padding-top: 3px;
+        background-color: #31363F;
+    }
+    #navigation {
+        position: fixed;   
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #413F42;
+        opacity: 0.95;
+        color: white;
+        display: none;  /* nelze videt implicitne */
+        z-index: 999;   /* Trosku pod hamburger menu, aby byl klikatelne hamburger menu */
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    #navigation ul {
+        list-style: none;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;     /* Zobrazeni pod sebe */
+        /* Zarovnani na stred */
+        justify-content: center; 
+        align-items: center; 
+        padding: 0;
+    }
+    #navigation ul li {
+        padding: 20px; 
+    }
+    #navigation ul li a {
+        color: white; 
+        text-decoration: none; 
+        font-size: 24px; 
+    }
+    #navigation ul li a i {
+        font-size: 80px;
+    }
+    #navigation {
+        transition: all 0.3s ease;
+    }
+    #welcome-content{
+        /* Uprava pozadi, kvuli vlozene fotce */
+        background-color: black;
+        box-shadow: inset 0px 0px 15px 15px rgba(23, 23, 23, 23);
+    }
+    #welcome-content .image-wrapper img{
+        /* Uprava definice stylu pro fotografii */
+        float: none;
+        width: 90%;
+        opacity: 1; /* Hover na mobilnim zarizeni nema smysl, proto opacity nastavime zpet na 1 */
+        padding-left: 40px;
+        padding-right: 0;
+    }
+    #welcome-content #about-content p{
+        padding-left: 30px;
+    }
+    /* Projekty */
+    #projects-content #projects-wrapper{
+        /* projekty usporadame pod sebe */
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
+    #projects-content #projects-wrapper .project{
+        min-width: 95%;
+        /* Projekty zaberou vetsinu obrazovky (vuci rodici samozrejme) */
+    }
+    /* Portfolio */
+    #portfolio-content{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        /* Portfolio informace zobrazime pod sebe */
+
+    }
+    #portfolio-content #portfolio-person{
+        /* Zvetsime informace o osobe */
+        width: 90%;
+        padding-left: 30px;
+    }
+    #portfolio-content #portfolio-about{
+        /* Zvetsime informace o osobe */
+        width: 90%;
+        padding-left: 30px;
+    }
+    #portfolio-content #portfolio-skills{
+        width: 100%;
+    }
 }
